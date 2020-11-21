@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"
+      integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Cars</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1 id="watch"></h1>
+      <div class="title_catalog row">
+        <h1 class="title col-6">Cars</h1>
+        <div class="catalog_style col-6" id="masonry">
+          <button name="liked" type="" class="btn btn-primary mr-2">
+            Избранное <i class="far fa-heart"></i>
+          </button>
+          <button
+            data-action="1"
+            class="catalog_style1 btn btn-primary fas fa-align-justify"
+          ></button>
+          <button
+            data-action="2"
+            class="catalog_style2 btn btn-primary fas fa-th-large"
+          ></button>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <form
+        class="navbar-form navbar-right form row"
+        role="search"
+        id="search-form"
+      >
+        <div class="form-group col-9">
+          <input
+            type="search"
+            class="form-control"
+            placeholder="Найти"
+            name="searchInput"
+            id="search-input"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary search-btn col-1">
+          <i class="fas fa-search"></i>
+        </button>
+      </form>
+    </div>
+    <div class="container row">
+      <div class="sorts col-3">
+        <select id="sortSelect" class="form-control mb-1">
+          <option disabled selected>Сортировка</option>
+          <option value="price-up">По цене (сначала дешевые)</option>
+          <option value="price-down">По цене (сначала дорогие)</option>
+          <option value="year-up">По году (сначала старые)</option>
+          <option value="year-down">По году (сначала новые)</option>
+          <option value="rating-up">
+            По рейтингу (сначала c низкими оценками)
+          </option>
+          <option value="rating-down">
+            По рейтингу (сначала c высокими оценками)
+          </option>
+          <option value="reviews-up">
+            По просмотрам (сначала c низкими просмотрами)
+          </option>
+          <option value="reviews-down">
+            По просмотрам (сначала c высокими просмотрами)
+          </option>
+        </select>
+        <form class="filters" id="filter-form">
+          <button type="submit" class="btn btn-success mt-3">Filter</button>
+        </form>
+        <!-- <form class="filters" id="filter-Price">
+          <label class="d-block border p-2 mt-3">
+            <p>минимальная цена:</p>
+            <input type="number" min="0" value="" name="priceMin" />
+            <p>максимальная цена:</p>
+            <input type="number" min="0" value="" name="priceMax" />
+          </label>
+          <button type="submit" class="btn btn-success mt-3">Filter</button>
+        </form> -->
+      </div>
+      <div class="cards row masonry1 col-9" id="list">
+        <!-- <div class="card col-6">
+          <div class="col-6 card_img">
+            <img src="img/hubspot.webp" alt="">
+          </div>
+          <div class="col-6 card_info">
+            <div class="card_title"><p>skoda bla bla</p></div>
+            <div class="car_info"><p>dsa dasa ds</p></div>
+            <div class="car_price"></div>
+            <button type="button" class="btn btn-success">BUY</button>
+          </div>
+        </div> -->
+      </div>
+    </div>
+
+    <a href="#" id="toTop" class="hidden btn btn-success totop">To top</a>
+
+    <!-- JS, Popper.js, and jQuery -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+      integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="cars.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
