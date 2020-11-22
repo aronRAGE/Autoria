@@ -34,7 +34,7 @@
 // })
 
 // console.log(newCars);
-const USD = 29.3566548542 
+const USD = 29.3566548542
 
 
 if (!localStorage.likeList) {
@@ -44,7 +44,7 @@ if (!localStorage.viewedList) {
   localStorage.viewedList = JSON.stringify([])
 }
 let CARS = cars
-const dateFormatter = new Intl.DateTimeFormat('en-US',{
+const dateFormatter = new Intl.DateTimeFormat('en-US', {
   year: '2-digit',
   month: '2-digit',
   day: '2-digit',
@@ -52,7 +52,7 @@ const dateFormatter = new Intl.DateTimeFormat('en-US',{
   minute: '2-digit',
   second: '2-digit',
 })
-const currencyFormatter = new Intl.NumberFormat('ru',{
+const currencyFormatter = new Intl.NumberFormat('ru', {
   style: "currency",
   currency: "UAH",
   maximumSignificantDigits: 3,
@@ -62,10 +62,115 @@ const List = document.getElementById('list')
 const searchForm = document.getElementById('search-form')
 const searchInput = document.getElementById('search-input')
 const filterForm = document.getElementById('filter-form')
+const cart = document.getElementById('cart')
+const cartBody = cart.querySelector('.cart-body')
 
-const body = document.querySelector('body')
+const body = document.body
 
 const filterList = ["make", "engine_volume", 'transmission', 'fuel', 'rating', 'price']
+
+List.addEventListener('click', function (event) {
+  if (event.target.classList.contains('btn-buy')) {
+    let id = event.target.closest('.card').dataset.id
+    addToCart(cartBody, id)
+  }
+})
+cartBody.addEventListener('click', function (event) {
+  if (event.target.classList.contains('btn-count')) {
+    // const input = event.target.parentElement.querySelector('input')
+    const input = event.target.previousElementSibling || event.target.nextElementSibling 
+    changeCartRowCount(input,event.target.dataset.action)
+  } else if (event.target.classList.contains('cart-row-delete')){
+    const row = event.target.closest('.cart-row')
+    row.remove()
+  }
+})
+
+function changeCartRowTotal(input) {
+  const rowElement = input.closest('.cart-row')
+  const price = +rowElement.querySelector('.cart-row-price').dataset.price
+  const totalElement = rowElement.querySelector('.cart-row-total')
+  let count = +input.value
+
+  totalElement.textContent = currencyFormatter.format(price * count)
+  totalElement.dataset.price = price * count
+  
+}
+
+function changeCartRowCount(input, action_type) {
+  if (action_type == 'increment' && input.value < 99) {
+    input.value++
+  } else if(action_type == 'decrement' && input.value > 1) {
+    input.value--
+  }
+  changeCartRowTotal(input)
+}
+
+function addToCart(node, id) {
+  let car = CARS.find((car => car.id == id))
+  let template = createCartRow(car)
+  const rows = node.children
+
+  for (const row of rows) {
+    if (row.dataset.id == id) {
+      changeCartRowCount(row.querySelector('input'), 'increment')
+      return
+    } 
+  }
+  
+  node.insertAdjacentHTML('beforeEnd', template)
+  
+}
+
+function createCartRow(car) {
+  let html = `<div class="cart-row border p-3 mb-2" data-id="${car.id}">
+  <div class="cart-row-number">#</div>
+  <img class="cart-row-img" src="${car.img}" alt="${car.make} ${car.model}"/>
+  <h6 class="cart-row-title">${car.make} ${car.model}, ${car.year}</h6>
+  <div class="cart-row-price" data-price="${car.price * USD}">${currencyFormatter.format(car.price * USD)}</div>
+  <div class="cart-row-count">
+  <button  data-action="decrement" class="btn-count btn btn-sm btn-secondary">-</button>
+  <input type="text" value="1" readonly>
+  <button  data-action="increment" class="btn-count btn btn-sm btn-secondary">+</button>
+  </div>
+  <div class="cart-row-total" data-price="${car.price * USD}">${currencyFormatter.format(car.price * USD)}</div>
+  <button class="btn btn-danger btn-sm cart-row-delete">&times;</button>
+</div>`
+  return html
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 searchForm.addEventListener('submit', ev => {

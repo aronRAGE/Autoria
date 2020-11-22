@@ -6,6 +6,83 @@ html{
     margin: 0 auto;
     padding: 0 15px;
 }
+
+
+.cart-header,.cart-row{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.cart-header>:nth-child(n+2),.cart-row>:nth-child(n+2){
+    margin-left: 20px;
+}
+.cart-header-number,
+.cart-row-number{
+    width: 3%;
+}
+.cart-header-img,
+.cart-row-img{
+    width: 10%;
+}
+.cart-header-title,
+.cart-row-title{
+    width: 30%;
+}
+.cart-header-price,
+.cart-row-price{
+    width: 20%;
+}
+.cart-header-count,
+.cart-row-count{
+    width: 10%;
+}
+.cart-header-total,
+.cart-row-total{
+    width: 20%;
+}
+.cart-header-delete,
+.cart-row-delete{
+    width: 5%;
+}
+.cart-row-img{
+    height: 100px;
+    object-fit: cover;
+}
+.cart-row-count{
+    display: flex;
+    align-items: center;
+}
+.cart-row-count>button{
+    padding: 5px;
+}
+.cart-row-count>input{
+    width: 100%;
+    margin: 0 5px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .title{
     text-align: center;
 }
@@ -13,7 +90,6 @@ html{
     justify-content: center;
 }
 .card{
-    padding: 0;
     flex-direction: row;
     padding: 10px;
     margin-bottom: 10px;
