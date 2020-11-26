@@ -1,6 +1,9 @@
 html{
     scroll-behavior: smooth;
 }
+body{
+    counter-reset: section;  
+}
 .container{
     max-width: 1600px;
     margin: 0 auto;
@@ -309,4 +312,8 @@ html{
     display: flex;
     justify-content: space-between;
     margin-bottom: 40px;
+}
+.cart-row-number::before{
+    counter-increment: section;    
+    content: counter(section);
 }

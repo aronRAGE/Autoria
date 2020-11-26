@@ -69,22 +69,38 @@ const body = document.body
 
 const filterList = ["make", "engine_volume", 'transmission', 'fuel', 'rating', 'price']
 
-List.addEventListener('click', function (event) {
+List.addEventListener('click', function (event){
   if (event.target.classList.contains('btn-buy')) {
+    // event.target.classList.add("in-cart")
+    // event.target.classList.remove("btn-primary")
+    // event.target.classList.add("btn-warning")
+    // event.target.textContent = "Go To Cart"
+    event.target.nextElementSibling.classList.toggle('d-none')
+    event.target.classList.toggle('d-none')
+
     let id = event.target.closest('.card').dataset.id
     addToCart(cartBody, id)
   }
 })
+
+
 cartBody.addEventListener('click', function (event) {
   if (event.target.classList.contains('btn-count')) {
     // const input = event.target.parentElement.querySelector('input')
     const input = event.target.previousElementSibling || event.target.nextElementSibling 
     changeCartRowCount(input,event.target.dataset.action)
   } else if (event.target.classList.contains('cart-row-delete')){
+    
+
     const row = event.target.closest('.cart-row')
+    let id = row.dataset.id
+    const inCartBtn = document.querySelector(`.card[data-id='${id}']`).querySelector('.in-cart')
+    inCartBtn.previousElementSibling.classList.toggle('d-none')
+    inCartBtn.classList.toggle('d-none')
     row.remove()
   }
 })
+console.log(List.classList);
 
 function changeCartRowTotal(input) {
   const rowElement = input.closest('.cart-row')
@@ -124,7 +140,7 @@ function addToCart(node, id) {
 
 function createCartRow(car) {
   let html = `<div class="cart-row border p-3 mb-2" data-id="${car.id}">
-  <div class="cart-row-number">#</div>
+  <div class="cart-row-number"></div>
   <img class="cart-row-img" src="${car.img}" alt="${car.make} ${car.model}"/>
   <h6 class="cart-row-title">${car.make} ${car.model}, ${car.year}</h6>
   <div class="cart-row-price" data-price="${car.price * USD}">${currencyFormatter.format(car.price * USD)}</div>
@@ -289,11 +305,9 @@ function createFilterSection(cars, filterList) {
 
 window.addEventListener('scroll', ev => {
   if (window.scrollY > 1000 && toTop.classList.contains('hidden')) {
-    console.log('yes');
     toTop.classList.remove('hidden')
     toTop.classList.add('visible')
   } else if (window.scrollY < 1000 && !toTop.classList.contains('hidden')) {
-    console.log('yes');
     toTop.classList.remove('visible')
     toTop.classList.add('hidden')
   }
@@ -384,12 +398,10 @@ window.addEventListener('scroll', setViewedCard)
 
 
 
-
 // start()
 // async function start() {
 //   const res = await fetch('/data/cars.json')
 //   const json = await res.json()
-
 // }
 
 console.time('cards')
@@ -453,7 +465,7 @@ function createHTML(car) {
   return `<div class="card row ${JSON.parse(localStorage.viewedList).includes(car.id) && 'seen'}" data-id="${car.id}">
     <div class="col-5 card_img">
       <div class="viptop info_n_img">${top}${vip}</div>
-        <img src="${car.img}" alt="">
+        <img loading="lazy" src="${car.img}" alt="${title}">
         <div class="under_img_info">
           <div class="car_info_under_img car_info_info row">
             <p class="col-5">transmission:</p><p class="col-7">${car.transmission}</p>
@@ -493,8 +505,9 @@ function createHTML(car) {
     </div>
       <div class="car_raiting"><p>${stars} </p><p><i class="far fa-eye reviews"></i>${car.reviews}</p><p data-id="${car.id}"></p></div>
       <div class="car_price">${currencyFormatter.format(car.price * USD)}</div>
-      <button type="button" class="btn btn-success btn-buy">BUY</button>
-      <button type="button" class="btn btn-primary">CALL</button>
+      <button type="button" class="btn btn-success btn-buy">Buy</button>
+      <a href="#cart" class="d-none btn btn-warning in-cart">Go to cart</a>
+      <a href="tel:${car.phone}" class="btn btn-primary">CALL</a>
       <div class="numbers">
         <div class="number">${car.phone}</div>
         <div class="number">${dateFormatter.format(car.timestamp)}</div>
@@ -502,32 +515,3 @@ function createHTML(car) {
     </div>
   </div>`
 }
-
-
-
-// async function f() {
-//   console.log(1);
-// }
-
-// setTimeout(() => {
-//   console.log(2);
-// }, 0);
-
-// console.time('cycle')
-// for (let i = 0; i < 500000000; i++) {
-//   const r = Math.random()
-// }
-// console.timeEnd('cycle')
-
-// console.log(3);
-// f()
-
-
-// let formtDate = dateFormatter.format(time)
-
-// console.log(formtDate);
-
-
-// setInterval(() => {
-//   watch.textContent = dateFormatter.format(Date.now())
-// }, 1000);
