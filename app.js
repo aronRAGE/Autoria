@@ -33,7 +33,6 @@
 //   }
 // })
 
-// console.log(newCars);
 const USD = 29.3566548542
 
 
@@ -80,6 +79,7 @@ List.addEventListener('click', function (event){
 
     let id = event.target.closest('.card').dataset.id
     addToCart(cartBody, id)
+    addToTotal()
   }
 })
 
@@ -100,18 +100,18 @@ cartBody.addEventListener('click', function (event) {
     row.remove()
   }
 })
-console.log(List.classList);
+
 
 function changeCartRowTotal(input) {
   const rowElement = input.closest('.cart-row')
   const price = +rowElement.querySelector('.cart-row-price').dataset.price
   const totalElement = rowElement.querySelector('.cart-row-total')
   let count = +input.value
-
   totalElement.textContent = currencyFormatter.format(price * count)
   totalElement.dataset.price = price * count
-  
 }
+
+
 
 function changeCartRowCount(input, action_type) {
   if (action_type == 'increment' && input.value < 99) {
@@ -120,6 +120,20 @@ function changeCartRowCount(input, action_type) {
     input.value--
   }
   changeCartRowTotal(input)
+  addToTotal()
+}
+
+function addToTotal(){
+  let totalPrice
+  const rowElement = cart.querySelectorAll('.cart-row')
+  const totalElement = cart.querySelector('.cart-footer-total')
+  for (const row of rowElement) {
+   const price = +row.querySelector('.cart-row-total').dataset.price
+  totalPrice =  price
+    console.log(totalPrice);
+  }; 
+  totalElement.textContent = currencyFormatter.format(totalPrice)
+  totalElement.dataset.price = totalPrice
 }
 
 function addToCart(node, id) {
@@ -192,7 +206,6 @@ function createCartRow(car) {
 searchForm.addEventListener('submit', ev => {
   ev.preventDefault()
   let val = ev.target.searchInput.value.trim().toLowerCase()
-  console.log(val);
   CARS = cars.filter(car => {
     let fullCarName = `${car.make} ${car.model}`.trim().toLowerCase()
     return fullCarName.includes(val)
@@ -215,7 +228,6 @@ filterForm.addEventListener('submit', ev => {
       }
     })
   })
-  console.log(filterOptions);
   CARS = cars.filter(car => {
     for (const filter in filterOptions) {
       if (filterOptions.hasOwnProperty(filter)) {
@@ -234,7 +246,6 @@ filterForm.addEventListener('submit', ev => {
 
 // searchInput.addEventListener('input', ev => {
 //     let val = ev.target.value.trim().toLowerCase()
-//     console.log(val);
 //     CARS = cars.filter(car => {
 //       let fullCarName = `${car.make} ${car.model}`.trim().toLowerCase()
 //       return fullCarName.includes(val)
@@ -373,7 +384,6 @@ function isElementInViewport(el) {
 }
 function setViewedCard() {
   window.removeEventListener('scroll', setViewedCard)
-  console.log('scroll');
   const unseenCards = List.querySelectorAll(".card:not(.seen)");
   const viewedList = JSON.parse(localStorage.viewedList)
   for (let i = 0; i < unseenCards.length; i++) {
@@ -381,7 +391,6 @@ function setViewedCard() {
     if (isElementInViewport(card)) {
       card.classList.add("seen");
       const id = card.dataset.id
-      // console.log(unseenCards,id);
       viewedList.push(id)
     }
   }
@@ -404,9 +413,7 @@ window.addEventListener('scroll', setViewedCard)
 //   const json = await res.json()
 // }
 
-console.time('cards')
 renderCarList(CARS, List)
-console.timeEnd('cards')
 
 
 sortSelect.addEventListener('change', ev => {
