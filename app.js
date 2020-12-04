@@ -98,6 +98,7 @@ cartBody.addEventListener('click', function (event) {
     inCartBtn.previousElementSibling.classList.toggle('d-none')
     inCartBtn.classList.toggle('d-none')
     row.remove()
+    addToTotal()
   }
 })
 
@@ -124,17 +125,20 @@ function changeCartRowCount(input, action_type) {
 }
 
 function addToTotal(){
-  let totalPrice
+  let totalPrice = 0
   const rowElement = cart.querySelectorAll('.cart-row')
-  const totalElement = cart.querySelector('.cart-footer-total')
+  const totalElement = cart.querySelector('.cart-footer-total>span')
   for (const row of rowElement) {
    const price = +row.querySelector('.cart-row-total').dataset.price
-  totalPrice =  price
+  totalPrice += price
     console.log(totalPrice);
   }; 
   totalElement.textContent = currencyFormatter.format(totalPrice)
   totalElement.dataset.price = totalPrice
 }
+
+
+
 
 function addToCart(node, id) {
   let car = CARS.find((car => car.id == id))
