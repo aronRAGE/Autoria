@@ -33,7 +33,7 @@
 //   }
 // })
 
-const USD = 29.3566548542
+const USD = 29
 
 
 if (!localStorage.likeList) {
@@ -41,6 +41,9 @@ if (!localStorage.likeList) {
 }
 if (!localStorage.viewedList) {
   localStorage.viewedList = JSON.stringify([])
+}
+if (!localStorage.cartList) {
+  localStorage.cartList = JSON.stringify([])
 }
 let CARS = cars
 const dateFormatter = new Intl.DateTimeFormat('en-US', {
@@ -131,7 +134,6 @@ function addToTotal(){
   for (const row of rowElement) {
    const price = +row.querySelector('.cart-row-total').dataset.price
   totalPrice += price
-    console.log(totalPrice);
   }; 
   totalElement.textContent = currencyFormatter.format(totalPrice)
   totalElement.dataset.price = totalPrice
@@ -173,12 +175,34 @@ function createCartRow(car) {
   return html
 }
 
+async function currency() {
 
+  try {
+    let response = await fetch('https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5');
+    let v = await response.json();
+    let value = v[0]
+    let currencyPrice = +value.buy
+    console.log(currencyPrice);
+  } catch(err) {
+    console.error(err);
+  }
+}
 
+cart.addEventListener('click', event => {
+  if (event.target.classList.contains('btn-buy')) {
+    const btn = event.target
+    const id = btn.dataset.id
+    const cartList = JSON.parse(localStorage.cartList)
 
-
-
-
+    if (!cartList.includes(id)) {
+      cartList.push(id)
+    } else {
+      let idIndex = cartList.indexOf(id)
+      cartList.splice(idIndex, 1)
+    }
+    localStorage.cartList = JSON.stringify(cartList)
+  }
+})
 
 
 
@@ -355,7 +379,6 @@ masonry.addEventListener('click', ev => {
 //   );
 // }
 
-
 List.addEventListener('click', event => {
   if (event.target.classList.contains('like')) {
     const btn = event.target
@@ -516,7 +539,7 @@ function createHTML(car) {
     </div>
       <div class="car_raiting"><p>${stars} </p><p><i class="far fa-eye reviews"></i>${car.reviews}</p><p data-id="${car.id}"></p></div>
       <div class="car_price">${currencyFormatter.format(car.price * USD)}</div>
-      <button type="button" class="btn btn-success btn-buy">Buy</button>
+      <button type="button" class="btn btn-success btn-buy" data-id="${car.id}">Buy</button>
       <a href="#cart" class="d-none btn btn-warning in-cart">Go to cart</a>
       <a href="tel:${car.phone}" class="btn btn-primary">CALL</a>
       <div class="numbers">
